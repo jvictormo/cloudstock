@@ -1,0 +1,50 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+}
+
+h3,
+h4 {
+  margin: 0;
+}
+
+button {
+  color: white;
+  background-color: #3D63DD;
+  border: none;
+  cursor: pointer;
+  padding: 1vw;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1.1vw;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+input {
+  border-radius: 6px;
+  border: 1px solid #D0D0D0;
+  padding: 1vw;
+}
+
+button:hover {
+  background-color: #4159a8;
+}
+
+.application-content {
+  margin-left: 6%;
+  max-height: 100%;
+  width: 94%;
+  box-sizing: border-box;
+  padding: 3%;
+}

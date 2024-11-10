@@ -1,0 +1,238 @@
+.landingpage-header {
+  width: 100%;
+  height: 15vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 3vw 0px 3vw;
+  box-sizing: border-box;
+  background-color: #2F3438;
+}
+
+.landingpage-containers {
+  display: flex;
+  gap: 2vw;
+}
+
+.landingpage-containers>h3 {
+  color: white;
+}
+
+.landingpage-containers>button {
+  width: 8vw;
+  height: 6vh;
+  padding: 0;
+}
+
+.landingpage-main-cover {
+  width: 100%;
+  height: 70vh;
+  background-color: #BDD1FF;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0px 6vw 0px 6vw;
+  align-items: center;
+}
+
+.landingpage-main-cover>div {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+}
+
+.landingpage-main-cover>div>h4 {
+  font-size: 3vw;
+  font-weight: 800;
+}
+
+.landingpage-main-cover>div>h4,
+p {
+  color: #1D2E5C;
+}
+
+.landingpage-main-cover>img {
+  width: 30vw;
+}
+
+.landingpage-cloud-stock-facility-class {
+  background-color: #3D63DD;
+  border-radius: 24px;
+  width: 240px;
+  padding: 6px 0px 6px 0px;
+  color: white;
+  font-weight: 700;
+  text-align: center;
+}
+
+.ladingpage-trustworth-companies {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.landingpage-companies-container {
+  display: flex;
+  gap: 6vw;
+}
+
+.ladingpage-trustworth-companies {
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+}
+
+.ladingpage-trustworth-companies>h4 {
+  font-size: 2vw;
+}
+
+.ladingpage-trustworth-companies>h5 {
+  font-size: 1.2vw;
+  font-weight: 500;
+  margin-bottom: 2.5vh;
+}
+
+.ladingpage-trustworth-companies>hr {
+  height: 3px;
+  width: 60vw;
+  background-color: #3D63DD;
+  border: none;
+  margin-top: 0;
+  margin-bottom: 7vh;
+  border: none;
+  margin-top: 0;
+  margin-bottom: 7vh;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.ladingpage-trustworth-companies>hr.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.landingpage-companies-squares {
+  border: 1px solid #bbbbbb;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  width: 14vw;
+  height: 14vw;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.landingpage-companies-squares:hover {
+  transform: scale(1.07);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.landingpage-companies-squares>img {
+  width: 70%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.landingpage-companys-squares:hover>img {
+  transform: scale(1.1);
+}
+
+.landingpage-cloudstock-question {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2vw;
+  width: 90%;
+}
+
+.landingpage-cloudstock-question-image-container {
+  display: flex;
+  justify-content: center;
+}
+
+.landingpage-cloudstock-question-image-container>img {
+  width: 30vw;
+}
+
+.landingpage-faq {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 15vh;
+}
+
+.landingpage-faq>p {
+  color: #3D63DD;
+  font-size: 1.2vw;
+}
+
+.landingpage-faq>h4 {
+  font-weight: 400;
+  font-size: 1.8vw;
+}
+
+.landingpage-faq-container {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 3vw;
+}
+
+.landingpage-faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 1.5vw;
+}
+
+.landingpage-faq-question * {
+  cursor: pointer;
+}
+
+.landingpage-faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+  opacity: 0;
+  font-size: 1.3vw;
+}
+
+.landingpage-faq-answer.open {
+  max-height: 100px;
+  opacity: 1;
+}
+
+.landingpage-arrow {
+  transition: transform 0.3s ease;
+}
+
+.landingpage-arrow.open {
+  transform: rotate(180deg);
+}
+
+.landingpage-footer {
+  background-color: #1A1A1A;
+  min-height: 40vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 3vw 0px 3vw;
+  color: white;
+}
+
+.landingpage-footer>div>p {
+  color: white;
+}
+
+.ladingpage-footer-containers {
+  width: 40%;
+}
+
+.ladingpage-footer-text-container {
+  width: 40%;
+  text-align: end;
+}

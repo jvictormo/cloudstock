@@ -1,0 +1,39 @@
+.enviardados-container>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.enviardados-buttons-container {
+    display: flex;
+    width: 30%;
+    justify-content: space-between;
+}
+
+.enviardados-buttons-container>label{
+    height: 5%;
+    width: 35%;
+    display: inline-block;
+    padding: 1vw;
+    background-color: #3D63DD;
+    color: white;
+    font-size: 1.1vw;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.enviardados-buttons-container>button {
+    height: 10%;
+    width: 40%;
+}
+
+.enviardados-buttons-container>input{
+    display: none;
+}
+
+.enviardados-buttons-container>label:hover {
+    background-color: #2A47B3;
+}

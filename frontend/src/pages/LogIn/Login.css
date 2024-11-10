@@ -1,0 +1,46 @@
+.login-container {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    height: 100vh;
+}
+
+.login-sidebar-container {
+    display: flex;
+    flex-direction: column;
+    height: 75%;
+    justify-content: space-between;
+    padding: 10vh 3vw 0px 3vw;
+}
+
+.login-forms {
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+}
+
+.login-forms>div{
+    display: flex;
+    flex-direction: column;
+}
+
+.login-forms>span{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-forms>p{
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.login-remember-me-container{
+    display: flex;
+    align-items: center;
+    gap: 0.3vw;
+}
+
+.login-remember-me-container>label{
+    color: gray;
+}

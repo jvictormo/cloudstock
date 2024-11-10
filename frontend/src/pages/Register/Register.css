@@ -1,0 +1,165 @@
+.register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    height: 100vh;
+}
+
+.register-container>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.8%;
+    margin-left: 10%;
+    border-radius: 8px;
+    background-color: white;
+    z-index: 2;
+    gap: 1vw;
+    height: 80vh;
+}
+
+.register-tittle-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-tittle-container>h1 {
+    margin: 0;
+    color: #1D2E5C;
+}
+
+.register-tittle-container>hr {
+    height: 3px;
+    border: 0;
+    width: 20%;
+    background-color: #3D63DD;
+    margin: 0;
+}
+
+.register-container>div>button {
+    width: 100%;
+}
+
+.register-forms-container {
+    height: 50vh;
+    width: 25vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+}
+
+.register-forms-container>div {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.register-forms-container>div>label {
+    font-size: 0.9vw;
+}
+
+.register-password-container {
+    position: relative;
+    display: flex;
+    flex-direction: row !important;
+}
+
+.register-password-container input {
+    width: 100%;
+}
+
+.register-password-icon {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+.register-body {
+    height: 100vh;
+    /* Garante que ocupe toda a altura da viewport */
+    position: relative;
+    /* Isso permite que os elementos filhos sejam posicionados em relação a ela */
+}
+
+.register-container {
+    margin: auto;
+    overflow: auto;
+    background: linear-gradient(315deg, #aa00ff 3%, #6f00ff 38%, #3c00ff);
+    animation: gradient 15s ease infinite;
+    background-size: 400% 400%;
+    background-attachment: fixed;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    50% {
+        background-position: 100% 100%;
+    }
+
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+.wave {
+    background: rgb(255 255 255 / 25%);
+    border-radius: 1000% 1000% 0 0;
+    position: fixed;
+    width: 200%;
+    height: 12em;
+    animation: wave 10s -3s linear infinite;
+    transform: translate3d(0, 0, 0);
+    opacity: 0.8;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.wave:nth-of-type(2) {
+    bottom: -1.25em;
+    animation: wave 18s linear reverse infinite;
+    opacity: 0.8;
+}
+
+.wave:nth-of-type(3) {
+    bottom: -2.5em;
+    animation: wave 20s -1s reverse infinite;
+    opacity: 0.9;
+}
+
+@keyframes wave {
+    2% {
+        transform: translateX(1);
+    }
+
+    25% {
+        transform: translateX(-25%);
+    }
+
+    50% {
+        transform: translateX(-50%);
+    }
+
+    75% {
+        transform: translateX(-25%);
+    }
+
+    100% {
+        transform: translateX(1);
+    }
+}
