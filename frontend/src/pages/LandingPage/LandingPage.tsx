@@ -8,6 +8,12 @@ function LandingPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    
+      const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken")
+      if(token) {
+          navigate("/dashboard")
+      }
+
     const hr = hrRef.current;
     if (!hr) return
     const observer = new IntersectionObserver((entries) => {

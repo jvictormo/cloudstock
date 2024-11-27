@@ -6,28 +6,36 @@ import "./Login.css"
 function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [rememberMe, setRememberMe] = useState(false)
 
     const navigate = useNavigate();
 
     async function handleLogin(e: React.FormEvent) {
         e.preventDefault();
+        localStorage.clear()
+        sessionStorage.clear()
+        
         try {
-            const userData = await axios.get(`http://localhost:3000/user/login/${email}/${password}`)
+            const response = await axios.get(`http://localhost:3000/user/login/${email}/${password}/${rememberMe}`)
 
-            console.log(userData.response.data)
-            if (userData.status === 500) {
-                alert("Erro ao tentar fazer login")
-            } else if (userData.status === 401) {
-                if (userData.data.error === "Incorrect password.") {
-                    alert("Senha Incorreta")
-                } else {
-                    alert("Usuário não encontrado")
-                }
-            } else if (userData.status === 200) {
-                //navigate("/dashboard");
+            const { token } = response.data;
+
+            if (rememberMe) {
+                localStorage.setItem("authToken", token);
+            } else {
+                sessionStorage.setItem("authToken", token);
             }
-        } catch (error) {
-            console.error(error)
+
+            navigate("/dashboard");
+        } catch (error: any) {
+            if (error.response?.status === 401) {
+                alert(error.response?.data.error)
+                return
+            } else {
+                alert("Erro ao realizar login de usuario.")
+                console.error(error)
+                return
+            }
         }
 
     }
@@ -47,7 +55,7 @@ function Login() {
                     </div>
                     <span>
                         <div className="login-remember-me-container">
-                            <input type="checkbox" id="rememberMe" />
+                            <input onClick={() => setRememberMe(!rememberMe)} type="checkbox" id="rememberMe" />
                             <label htmlFor="rememberMe">Lembre-se de mim</label>
                         </div>
                         <a href="/forgot-password">Esqueceu sua senha?</a>

@@ -1,6 +1,13 @@
+import { useEffect } from "react"
 import "./PageNotFound.css"
 
 function PageNotFound() {
+
+    useEffect(() => {
+        localStorage.clear()
+        sessionStorage.clear()
+    }, [])
+
     return (
         <>
             <div className="page-not-found-container">

@@ -26,9 +26,31 @@ import {
 } from '@tanstack/react-query';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Product, fakeProducts } from './makeData'; // Importe os dados falsos
+import axios from 'axios';
 
-const Produtos = () => {
+interface UserData {
+  sequenceIdUser: number;
+  email: string;
+  name: string;
+  companyName: string;
+}
+
+export type Product = {
+  sequenceIdProduct: string;
+  product: string;
+  description: string;
+  plant: string;
+  value: number;
+  unit: string;
+  quantity: number;
+  sequenceIdUser: number;
+};
+
+interface ProdutosComProvidersProps {
+  userData: UserData;
+}
+
+const Produtos: React.FC<ProdutosComProvidersProps> = ({ userData }) => {
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
@@ -36,12 +58,9 @@ const Produtos = () => {
   const columns = useMemo<MRT_ColumnDef<Product>[]>(
     () => [
       {
-        accessorKey: 'id',
+        accessorKey: 'sequenceIdProduct',
         header: 'ID',
         enableEditing: false,
-        size: 20, // Largura fixa
-        minSize: 20,
-        maxSize: 50,
         muiTableHeadCellProps: {
           sx: {
             whiteSpace: 'nowrap',
@@ -56,7 +75,7 @@ const Produtos = () => {
         },
       },
       {
-        accessorKey: 'produto',
+        accessorKey: 'product',
         header: 'Produto',
         size: 100,
         minSize: 100,
@@ -73,9 +92,19 @@ const Produtos = () => {
             flex: '0 0 150px',
           },
         },
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.product,
+          helperText: validationErrors?.product || '',
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              product: undefined,
+            }),
+        }
       },
       {
-        accessorKey: 'descricao',
+        accessorKey: 'description',
         header: 'Descrição',
         size: 200,
         minSize: 150,
@@ -92,9 +121,19 @@ const Produtos = () => {
             flex: '0 0 200px',
           },
         },
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.description,
+          helperText: validationErrors?.description || '',
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              description: undefined,
+            }),
+        }
       },
       {
-        accessorKey: 'planta',
+        accessorKey: 'plant',
         header: 'Planta',
         size: 80,
         minSize: 80,
@@ -111,9 +150,19 @@ const Produtos = () => {
             flex: '0 0 100px',
           },
         },
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.plant,
+          helperText: validationErrors?.plant || '',
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              plant: undefined,
+            }),
+        }
       },
       {
-        accessorKey: 'valor',
+        accessorKey: 'value',
         header: 'Valor',
         size: 40,
         minSize: 40,
@@ -130,9 +179,19 @@ const Produtos = () => {
             flex: '0 0 80px',
           },
         },
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.value,
+          helperText: validationErrors?.value || '',
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              value: undefined,
+            }),
+        }
       },
       {
-        accessorKey: 'unidade',
+        accessorKey: 'unit',
         header: 'Unidade',
         size: 100,
         minSize: 80,
@@ -149,9 +208,19 @@ const Produtos = () => {
             flex: '0 0 100px',
           },
         },
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.unit,
+          helperText: validationErrors?.unit || '',
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              unit: undefined,
+            }),
+        }
       },
       {
-        accessorKey: 'quantidade',
+        accessorKey: 'quantity',
         header: 'Quantidade',
         size: 100,
         minSize: 80,
@@ -168,6 +237,16 @@ const Produtos = () => {
             flex: '0 0 100px',
           },
         },
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.quantity,
+          helperText: validationErrors?.quantity || '',
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              quantity: undefined,
+            }),
+        }
       },
     ],
     [validationErrors],
@@ -175,19 +254,20 @@ const Produtos = () => {
 
   // Hooks para CRUD
   const { mutateAsync: createProduct, isPending: isCreatingProduct } =
-    useCreateProduct();
+    useCreateProduct(userData.sequenceIdUser);
+
   const {
     data: fetchedProducts = [],
     isError: isLoadingProductsError,
     isFetching: isFetchingProducts,
     isLoading: isLoadingProducts,
-  } = useGetProducts();
+  } = useGetProducts(userData.sequenceIdUser);
+
   const { mutateAsync: updateProduct, isPending: isUpdatingProduct } =
     useUpdateProduct();
   const { mutateAsync: deleteProduct, isPending: isDeletingProduct } =
     useDeleteProduct();
 
-  // Ações de CRUD
   const handleCreateProduct: MRT_TableOptions<Product>['onCreatingRowSave'] =
     async ({ values, table }) => {
       const newValidationErrors = validateProduct(values);
@@ -197,7 +277,7 @@ const Produtos = () => {
       }
       setValidationErrors({});
       await createProduct(values);
-      table.setCreatingRow(null); // Sair do modo criação
+      table.setCreatingRow(null);
     };
 
   const handleSaveProduct: MRT_TableOptions<Product>['onEditingRowSave'] =
@@ -209,14 +289,14 @@ const Produtos = () => {
       }
       setValidationErrors({});
       await updateProduct(values);
-      table.setEditingRow(null); // Sair do modo edição
+      table.setEditingRow(null);
     };
 
   const openDeleteConfirmModal = (row: MRT_Row<Product>) => {
     if (
-      window.confirm(`Tem certeza que deseja deletar o produto "${row.original.produto}"?`)
+      window.confirm(`Tem certeza que deseja deletar o produto "${row.original.product}"?`)
     ) {
-      deleteProduct(row.original.id);
+      deleteProduct(parseInt(row.original.sequenceIdProduct));
     }
   };
 
@@ -226,7 +306,7 @@ const Produtos = () => {
     createDisplayMode: 'modal',
     editDisplayMode: 'modal',
     enableEditing: true,
-    getRowId: (row) => row.id,
+    getRowId: (row) => row.sequenceIdProduct,
     muiToolbarAlertBannerProps: isLoadingProductsError
       ? {
         color: 'error',
@@ -251,19 +331,20 @@ const Produtos = () => {
     onCreatingRowSave: handleCreateProduct,
     onEditingRowCancel: () => setValidationErrors({}),
     onEditingRowSave: handleSaveProduct,
-    renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
-      <>
-        <DialogTitle variant="h3">Criar Novo Produto</DialogTitle>
-        <DialogContent
-          sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
-        >
-          {internalEditComponents}
-        </DialogContent>
-        <DialogActions>
-          <MRT_EditActionButtons variant="text" table={table} row={row} />
-        </DialogActions>
-      </>
-    ),
+    renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => {
+      return (
+        <>
+          <DialogTitle variant="h3">Criar Novo Produto</DialogTitle>
+          <DialogContent
+            sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+          >
+            {internalEditComponents}
+          </DialogContent>
+          <DialogActions>
+            <MRT_EditActionButtons variant="text" table={table} row={row} />
+          </DialogActions>
+        </>)
+    },
     renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h3">Editar Produto</DialogTitle>
@@ -313,76 +394,62 @@ const Produtos = () => {
   return <MaterialReactTable table={table} />;
 };
 
-// Hooks de CRUD utilizando React Query
-
-// Hook para criar um produto
-function useCreateProduct() {
+function useCreateProduct(sequenceIdUser: number) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async () => {
-      // Simulação de chamada API
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      return Promise.resolve();
+    mutationFn: async (newProduct: Product) => {
+      newProduct = { ...newProduct, sequenceIdUser }
+      const response = await axios.post(`http://localhost:3000/product/create`, newProduct);
+      return response.data;
     },
-    onMutate: (newProduct: Product) => {
-      queryClient.setQueryData(['products'], (prevProducts: Product[] = []) => [
-        ...prevProducts,
-        { ...newProduct, id: (Math.random() + 1).toString(36).substring(7) },
-      ]);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
     },
   });
 }
 
+
 // Hook para obter produtos
-function useGetProducts() {
+function useGetProducts(sequenceIdUser: number) {
   return useQuery<Product[]>({
-    queryKey: ['products'],
+    queryKey: ['products', sequenceIdUser],
     queryFn: async () => {
-      // Simulação de chamada API
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      return Promise.resolve(fakeProducts);
+      const response = await axios.get(`http://localhost:3000/product/get/${sequenceIdUser}`);
+      return response.data;
     },
     refetchOnWindowFocus: false,
   });
 }
 
-// Hook para atualizar um produto
+
 function useUpdateProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async () => {
-      // Simulação de chamada API
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      return Promise.resolve();
+    mutationFn: async (updatedProduct: Product) => {
+      const response = await axios.put(`http://localhost:3000/product/update/${updatedProduct.sequenceIdProduct}`, updatedProduct,);
+      return response.data;
     },
-    onMutate: (updatedProduct: Product) => {
-      queryClient.setQueryData(['products'], (prevProducts: Product[] = []) =>
-        prevProducts.map((product) =>
-          product.id === updatedProduct.id ? updatedProduct : product,
-        ),
-      );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
     },
   });
 }
 
-// Hook para deletar um produto
+
 function useDeleteProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async () => {
-      // Simulação de chamada API
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      return Promise.resolve();
+    mutationFn: async (productId: number) => {
+      const response = await axios.delete(`http://localhost:3000/product/delete/${productId}`);
+      return response.data;
     },
-    onMutate: (productId: string) => {
-      queryClient.setQueryData(['products'], (prevProducts: Product[] = []) =>
-        prevProducts.filter((product) => product.id !== productId),
-      );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
     },
   });
 }
 
-// Validações dos campos do produto
+
 const validateRequired = (value: string | number) => {
   if (typeof value === 'string') {
     return value.trim().length > 0;
@@ -392,30 +459,39 @@ const validateRequired = (value: string | number) => {
 
 function validateProduct(product: Product) {
   return {
-    produto: !validateRequired(product.produto) ? 'Produto é obrigatório' : '',
-    descricao: !validateRequired(product.descricao)
+    product: !validateRequired(product.product) ? 'Produto é obrigatório' : '',
+    description: !validateRequired(product.description)
       ? 'Descrição é obrigatória'
       : '',
-    planta: !validateRequired(product.planta) ? 'Planta é obrigatória' : '',
-    valor:
-      !validateRequired(product.valor) || product.valor < 0
-        ? 'Valor deve ser um número positivo'
-        : '',
-    unidade: !validateRequired(product.unidade) ? 'Unidade é obrigatória' : '',
-    quantidade:
-      !validateRequired(product.quantidade) || product.quantidade < 0
-        ? 'Quantidade deve ser um número positivo'
-        : '',
+    plant: !validateRequired(product.plant) ? 'Planta é obrigatória' : '',
+    value:
+      !validateRequired(product.value) || isNaN(product.value)
+        ? 'Valor deve ser um número'
+        : product.value < 0
+          ? 'Valor deve ser positivo'
+          : '',
+    unit: !validateRequired(product.unit) ? 'Unidade é obrigatória' : '',
+    quantity:
+      !validateRequired(product.quantity) || isNaN(product.quantity)
+        ? 'Quantidade deve ser um número inteiro'
+        : !Number.isInteger(Number(product.quantity))
+          ? 'Quantidade deve ser um número inteiro'
+          : product.quantity < 0
+            ? 'Quantidade deve ser positiva'
+            : '',
   };
 }
 
-// Configuração do React Query
+
 const queryClient = new QueryClient();
 
-const ProdutosComProviders = () => (
-  <QueryClientProvider client={queryClient}>
-    <Produtos />
-  </QueryClientProvider>
-);
+const ProdutosComProviders: React.FC<ProdutosComProvidersProps> = ({ userData }) => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Produtos userData={userData} />
+    </QueryClientProvider>
+  );
+};
+
 
 export default ProdutosComProviders;

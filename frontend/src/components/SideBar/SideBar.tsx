@@ -17,6 +17,8 @@ const SideBar: React.FC<SideBarProps> = ({ setSelectedButtonFunction }) => {
 
     function handleChangePage(page: string) {
         if (page == "Logout") {
+            localStorage.clear()
+            sessionStorage.clear()
             window.location.href = "/"
             return
         }

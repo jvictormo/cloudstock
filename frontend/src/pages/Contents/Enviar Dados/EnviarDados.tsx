@@ -1,42 +1,73 @@
 import React, { useState } from "react";
-import * as XLSX from "xlsx";
-import ProdutosComProviders from "./ProductTable"
-import "./EnviarDados.css"
+import ProdutosComProviders from "./ProductTable";
+import * as XLSX from 'xlsx';
+import "./EnviarDados.css";
+import { Product } from "./ProductTable";
 
 function EnviarDados() {
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
+    const [tableData, setTableData] = useState<Product[]>([]); 
+    
+    let idCounter = 0;
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             setSelectedFile(file.name);
+            readExcel(file);
         }
     };
 
     const baixarModelo = () => {
-    
-        const dadosModelo = [
-          ["ID", "Nome do Produto", "Preço", "Quantidade", "Categoria"],
-        ];
-    
-        const csvContent = dadosModelo
-          .map((linha) => linha.join(","))
-          .join("\n");
-        
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "Modelo_Produtos.csv";
-    
+        const filePath = '/Modelo_Produtos.xlsx';
+        const link = document.createElement('a');
+        link.href = filePath;
+        link.download = 'Modelo_Produtos.xlsx';
         link.click();
-      };
+    };
+
+    const readExcel = (file: File) => {
+        const reader = new FileReader();
+        reader.onload = (e: ProgressEvent<FileReader>) => {
+            const data = e.target?.result;
+            if (data) {
+                const workbook = XLSX.read(data, { type: 'binary' });
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+
+                const rawData: (string | number | undefined)[][] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                const jsonData: Product[] = [];
+
+                for (let i = 3; i < rawData.length; i++) {
+                    const row = rawData[i];
+
+                    if (row.slice(0, 6).every(cell => cell !== undefined && cell !== null && cell !== "")) {
+                        if (row.length === 6) {
+                            const entry: Product = {
+                                id: `product-${Date.now()}-${idCounter}`,
+                                product: String(row[0] ?? ""),
+                                description: String(row[1] ?? ""),
+                                plant: String(row[2] ?? ""),
+                                value: Number(row[3] ?? 0),
+                                unit: String(row[4] ?? ""),
+                                quantity: Number(row[5] ?? 0),
+                            };
+                            jsonData.push(entry);
+                            idCounter++;
+                        }
+                    }
+                }
+
+                setTableData(jsonData);
+            }
+        };
+        reader.readAsBinaryString(file);
+    };
 
     return (
         <div className="enviardados-container">
             <h1>Enviar Dados</h1>
-            <p>Envie seus produtos em formato xml para adicionar automaticamente ao banco de dados da CloudStoc<br />
-                (Preencha conforme o modelo para menor chance de erros)</p>
+            <p>Envie seus produtos em formato Excel para adicionar diretamente à tabela.</p>
             <div>
                 <div className="enviardados-buttons-container">
                     <label htmlFor="file">Enviar</label>
@@ -44,13 +75,13 @@ function EnviarDados() {
                     {selectedFile ? <p>{selectedFile}</p> : <p>Selecione um arquivo</p>}
                     <button onClick={baixarModelo}>Baixar Modelo</button>
                 </div>
-                <h3>Previa:</h3>
+                <h3>Prévia:</h3>
                 <div>
-                    <ProdutosComProviders />
+                    <ProdutosComProviders tableData={tableData} />
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default EnviarDados
+export default EnviarDados;

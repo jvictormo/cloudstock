@@ -1,19 +1,31 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SideBar from "../../components/SideBar/SideBar"
 import BaixarDados from "./Baixar Dados/BaixarDados"
 import Dashboard from "./Dashboard/Dashboard"
 import EnviarDados from "./Enviar Dados/EnviarDados"
 import Produtos from "./Produtos/Produtos"
+import useAuth from "../../../Hooks/useAuth"
+import { useNavigate } from "react-router-dom"
+import "./Content.css"
 
 function Contents() {
     const [selectedButton, setSelectedButton] = useState("Dashboard");
+
+    const navigate = useNavigate();
+
+    const { userData, loading, error } = useAuth();
 
     const renderContent = () => {
         switch (selectedButton) {
             case "Dashboard":
                 return <Dashboard />;
             case "Produtos":
-                return <Produtos />;
+                if (userData) {
+                    return <Produtos userData={userData} />;
+                } else {
+                    navigate("/404")
+                    return null
+                }
             case "Baixar Dados":
                 return <BaixarDados />;
             case "Enviar Dados":
@@ -23,9 +35,17 @@ function Contents() {
         }
     };
 
+    if (loading) {
+        return <div className="loading-container"><h3>Carregando...</h3></div>;
+    }
+
+    if (error) {
+        navigate("/404");
+    }
+
     return (
         <>
-            <SideBar setSelectedButtonFunction={setSelectedButton}/>
+            <SideBar setSelectedButtonFunction={setSelectedButton} />
             <div className="application-content">
                 {renderContent()}
             </div>

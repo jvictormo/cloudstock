@@ -1,10 +1,22 @@
 import ProdutosComProviders from "./ProductTable"
 
-function Produtos() {
+interface UserData {
+    sequenceIdUser: number;
+    email: string;
+    name: string;
+    companyName: string;
+}
+
+interface ProdutosProps {
+    userData: UserData;
+}
+
+
+function Produtos({ userData }: ProdutosProps) {
     return (
         <div>
             <h1>Gestão de Produtos</h1>
-            <ProdutosComProviders />
+            <ProdutosComProviders userData={userData} />
         </div>
     )
 }
