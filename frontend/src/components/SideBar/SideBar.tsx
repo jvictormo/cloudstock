@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightFromBracket, faDownload, faUpload, faTableColumns, faCashRegister, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket, faDownload, faUpload, faTableColumns, faCashRegister, faBars, faTimes, faTag } from "@fortawesome/free-solid-svg-icons";
 import "./SideBar.css";
 
 interface SideBarProps {
@@ -40,6 +40,11 @@ const SideBar: React.FC<SideBarProps> = ({ setSelectedButtonFunction }) => {
                     <FontAwesomeIcon icon={faCashRegister} />
                     <span className="sidebar-button-text">Produtos</span>
                 </button>
+                <button onClick={() => handleChangePage("Baixa Produtos")} className={`sidebar-button ${selectedButton === "Baixa Produtos" ? "sidebar-page-selected" : ""}`}>
+                    <FontAwesomeIcon icon={faTag} />
+                    <span className="sidebar-button-text">Baixa Produtos</span>
+                </button>
+
                 <button onClick={() => handleChangePage("Baixar Dados")} className={`sidebar-button ${selectedButton === "Baixar Dados" ? "sidebar-page-selected" : ""}`}>
                     <FontAwesomeIcon icon={faDownload} />
                     <span className="sidebar-button-text">Baixar Dados</span>

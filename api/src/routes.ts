@@ -7,6 +7,8 @@ import { GetProductByUserController } from "./controllers/Product/GetProductByUs
 import { DeleteProductController } from "./controllers/Product/DeleteProductController";
 import { CreateProductController } from "./controllers/Product/CreateProductController";
 import { UpdateProductController } from "./controllers/Product/UpdateProductController";
+import { CreateBulkProductsController } from "./controllers/Product/CreateBulkProductsController";
+import { GetProductWithStockController } from "./controllers/Product/GetProductWithStockController";
 
 export async function routes(fastify: FastifyInstance, options: FastifyPluginOptions) {
     fastify.get("/user/:sequenceIdUser", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -24,8 +26,14 @@ export async function routes(fastify: FastifyInstance, options: FastifyPluginOpt
     fastify.get("/product/get/:sequenceIdUser", async (request: FastifyRequest, reply: FastifyReply) => {
         return GetProductByUserController(request, reply)
     })
+    fastify.get("/product/get/stock/:sequenceIdUser", async (request: FastifyRequest, reply: FastifyReply) => {
+        return GetProductWithStockController(request, reply)
+    })
     fastify.post("/product/create", async (request: FastifyRequest, reply: FastifyReply) => {
         return CreateProductController(request, reply)
+    })
+    fastify.post("/product/bulk", async (request: FastifyRequest, reply: FastifyReply) => {
+        return CreateBulkProductsController(request, reply)
     })
     fastify.put("/product/update/:sequenceIdProduct", async (request: FastifyRequest, reply: FastifyReply) => {
         return UpdateProductController(request, reply)

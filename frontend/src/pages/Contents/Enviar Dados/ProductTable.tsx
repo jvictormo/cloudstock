@@ -31,11 +31,20 @@ export type Product = {
   quantity: number;
 };
 
-interface ProdutosComProvidersProps {
-  tableData: Product[];
+interface UserData {
+  sequenceIdUser: number;
+  email: string;
+  name: string;
+  companyName: string;
 }
 
-const Produtos: React.FC<ProdutosComProvidersProps> = ({ tableData }) => {
+
+interface ProdutosComProvidersProps {
+  tableData: Product[];
+  userData: UserData;
+}
+
+const Produtos: React.FC<ProdutosComProvidersProps> = ({ tableData, userData }) => {
   const [localProducts, setLocalProducts] = useState<Product[]>([]);
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
@@ -269,9 +278,14 @@ const Produtos: React.FC<ProdutosComProvidersProps> = ({ tableData }) => {
   };
 
   const handleSaveProducts = async () => {
+    const updatedProducts = localProducts.map(product => ({
+      ...product, 
+      sequenceIdUser: userData.sequenceIdUser 
+    }));
+
     try {
       await axios.post(`http://localhost:3000/product/bulk`, {
-        products: localProducts,
+        products: updatedProducts,
       });
       alert('Produtos enviados com sucesso!');
     } catch (error) {
@@ -391,10 +405,10 @@ function validateProduct(product: Product) {
 
 const queryClient = new QueryClient();
 
-const ProdutosComProviders: React.FC<ProdutosComProvidersProps> = ({ tableData }) => {
+const ProdutosComProviders: React.FC<ProdutosComProvidersProps> = ({ tableData, userData }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Produtos tableData={tableData} />
+      <Produtos tableData={tableData} userData={userData}/>
     </QueryClientProvider>
   );
 };

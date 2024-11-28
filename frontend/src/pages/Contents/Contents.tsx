@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import SideBar from "../../components/SideBar/SideBar"
 import BaixarDados from "./Baixar Dados/BaixarDados"
 import Dashboard from "./Dashboard/Dashboard"
@@ -7,6 +7,7 @@ import Produtos from "./Produtos/Produtos"
 import useAuth from "../../../Hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 import "./Content.css"
+import BaixaProdutos from "./Baixa Produtos/BaixaProdutos"
 
 function Contents() {
     const [selectedButton, setSelectedButton] = useState("Dashboard");
@@ -26,10 +27,22 @@ function Contents() {
                     navigate("/404")
                     return null
                 }
+            case "Baixa Produtos":
+                if (userData) {
+                    return <BaixaProdutos userData={userData} />;
+                } else {
+                    navigate("/404")
+                    return null
+                }
             case "Baixar Dados":
                 return <BaixarDados />;
             case "Enviar Dados":
-                return <EnviarDados />;
+                if (userData) {
+                    return <EnviarDados userData={userData} />;
+                } else {
+                    navigate("/404")
+                    return null
+                }
             default:
                 return <Dashboard />;
         }

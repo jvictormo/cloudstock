@@ -4,10 +4,21 @@ import * as XLSX from 'xlsx';
 import "./EnviarDados.css";
 import { Product } from "./ProductTable";
 
-function EnviarDados() {
+interface UserData {
+    sequenceIdUser: number;
+    email: string;
+    name: string;
+    companyName: string;
+}
+
+interface ProdutosProps {
+    userData: UserData;
+}
+
+function EnviarDados({ userData }: ProdutosProps) {
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
-    const [tableData, setTableData] = useState<Product[]>([]); 
-    
+    const [tableData, setTableData] = useState<Product[]>([]);
+
     let idCounter = 0;
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,14 +81,18 @@ function EnviarDados() {
             <p>Envie seus produtos em formato Excel para adicionar diretamente à tabela.</p>
             <div>
                 <div className="enviardados-buttons-container">
-                    <label htmlFor="file">Enviar</label>
+                    <label htmlFor="file" className="upload-button">
+                        <i className="fas fa-upload"></i> Enviar Arquivo
+                    </label>
                     <input id="file" type="file" onChange={handleFileChange} />
-                    {selectedFile ? <p>{selectedFile}</p> : <p>Selecione um arquivo</p>}
-                    <button onClick={baixarModelo}>Baixar Modelo</button>
+                    <button className="download-button" onClick={baixarModelo}>
+                        <i className="fas fa-file-download"></i> Baixar Modelo
+                    </button>
                 </div>
+                {selectedFile && <p className="selected-file">Arquivo Selecionado: {selectedFile}</p>}
                 <h3>Prévia:</h3>
                 <div>
-                    <ProdutosComProviders tableData={tableData} />
+                    <ProdutosComProviders tableData={tableData} userData={userData} />
                 </div>
             </div>
         </div>

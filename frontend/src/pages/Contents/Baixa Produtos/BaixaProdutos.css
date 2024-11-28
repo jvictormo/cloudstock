@@ -1,0 +1,52 @@
+.baixa-produtos-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.baixa-produtos-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+}
+
+.baixa-produtos-form label {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.baixa-produtos-form select, 
+.baixa-produtos-form input, 
+.baixa-produtos-form button {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.baixa-produtos-message {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: green;
+    text-align: center;
+}
+
+.product-details {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.product-details h3 {
+    margin-bottom: 10px;
+}
+
+.product-details p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
