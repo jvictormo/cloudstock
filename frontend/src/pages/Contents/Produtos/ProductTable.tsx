@@ -426,7 +426,13 @@ function useUpdateProduct() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (updatedProduct: Product) => {
-      const response = await axios.put(`http://localhost:3000/product/update/${updatedProduct.sequenceIdProduct}`, updatedProduct,);
+
+      const productToSend = {
+        ...updatedProduct,
+        quantity: Number(updatedProduct.quantity),
+      };
+
+      const response = await axios.put(`http://localhost:3000/product/update/${updatedProduct.sequenceIdProduct}`, productToSend,);
       return response.data;
     },
     onSuccess: () => {

@@ -57,7 +57,7 @@ export default function BaixaProdutos({ userData }: BaixaProdutosProps) {
         setMessage("");
     };
 
-    const handleBaixa = () => {
+    const handleBaixa = async () => {
         const productIndex = products.findIndex(
             (p) => p.sequenceIdProduct == selectedProductId
         );
@@ -78,6 +78,15 @@ export default function BaixaProdutos({ userData }: BaixaProdutosProps) {
 
         const updatedProducts = [...products];
         updatedProducts[productIndex].quantity -= quantity;
+
+        try{
+            await axios.put(`http://localhost:3000/product/stock/${updatedProducts[productIndex].sequenceIdProduct}`, updatedProducts[productIndex])
+        } catch(error) {
+            alert("Erro ao dar baixa no produto, verifique o console para mais informações.")
+            console.error(error)
+            return
+        }
+
         setProducts(updatedProducts);
 
         setMessage("Baixa realizada com sucesso.");

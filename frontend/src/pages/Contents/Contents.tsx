@@ -19,7 +19,12 @@ function Contents() {
     const renderContent = () => {
         switch (selectedButton) {
             case "Dashboard":
-                return <Dashboard />;
+                if (userData) {
+                    return <Dashboard userData={userData} />;
+                } else {
+                    navigate("/404")
+                    return null
+                }
             case "Produtos":
                 if (userData) {
                     return <Produtos userData={userData} />;
@@ -35,7 +40,13 @@ function Contents() {
                     return null
                 }
             case "Baixar Dados":
-                return <BaixarDados />;
+                case "Enviar Dados":
+                    if (userData) {
+                        return <BaixarDados userData={userData} />;
+                    } else {
+                        navigate("/404")
+                        return null
+                    }
             case "Enviar Dados":
                 if (userData) {
                     return <EnviarDados userData={userData} />;
@@ -44,7 +55,12 @@ function Contents() {
                     return null
                 }
             default:
-                return <Dashboard />;
+                if (userData) {
+                    return <BaixaProdutos userData={userData} />;
+                } else {
+                    navigate("/404")
+                    return null
+                }
         }
     };
 
@@ -58,7 +74,7 @@ function Contents() {
 
     return (
         <>
-            <SideBar setSelectedButtonFunction={setSelectedButton} />
+            <SideBar setSelectedButtonFunction={setSelectedButton} userData={userData}/>
             <div className="application-content">
                 {renderContent()}
             </div>

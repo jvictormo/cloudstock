@@ -3,11 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket, faDownload, faUpload, faTableColumns, faCashRegister, faBars, faTimes, faTag } from "@fortawesome/free-solid-svg-icons";
 import "./SideBar.css";
 
-interface SideBarProps {
-    setSelectedButtonFunction: (page: string) => void;
+interface UserData {
+    sequenceIdUser: number;
+    email: string;
+    name: string;
+    companyName: string;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ setSelectedButtonFunction }) => {
+interface SideBarProps {
+    setSelectedButtonFunction: (page: string) => void;
+    userData: UserData
+}
+
+const SideBar: React.FC<SideBarProps> = ({ setSelectedButtonFunction, userData }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedButton, setSelectedButton] = useState("Dashboard")
 
@@ -31,6 +39,14 @@ const SideBar: React.FC<SideBarProps> = ({ setSelectedButtonFunction }) => {
             <button onClick={toggleSidebar} className="sidebar-menu-toggle">
                 <FontAwesomeIcon icon={isOpen ? faTimes : faBars} />
             </button>
+            <div className="sidebar-logo-container">
+                <img src="CloudStockLogo.png"/>
+                <h3>CloudStock</h3>
+            </div>
+            <div className="sidebar-user-data-container">
+                <span>{userData.name}</span>
+                <span>{userData.companyName}</span>
+            </div>
             <nav className={`sidebar-buttons-nav ${isOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
                 <button onClick={() => handleChangePage("Dashboard")} className={`sidebar-button ${selectedButton === "Dashboard" ? "sidebar-page-selected" : ""}`}>
                     <FontAwesomeIcon icon={faTableColumns} />

@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios"
 import "./Login.css"
 
 function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false)
 
     const navigate = useNavigate();
@@ -40,6 +43,10 @@ function Login() {
 
     }
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
         <div className="login-container">
             <div className="login-sidebar-container">
@@ -49,9 +56,12 @@ function Login() {
                         <label htmlFor="email">Email</label>
                         <input onChange={(e) => setEmail(e.target.value)} placeholder="Email" id="email" type="email" />
                     </div>
-                    <div>
+                    <div className="login-password-container">
                         <label htmlFor="password" >Senha</label>
-                        <input onChange={(e) => setPassword(e.target.value)} placeholder="Senha" id="password" type="password" />
+                        <div>
+                        <input onChange={(e) => setPassword(e.target.value)} placeholder="Senha" id="password" type={showPassword ? "text" : "password"} />
+                        <FontAwesomeIcon className="register-password-icon" onClick={togglePasswordVisibility} icon={showPassword ? faEyeSlash : faEye} />
+                        </div>
                     </div>
                     <span>
                         <div className="login-remember-me-container">
@@ -64,7 +74,7 @@ function Login() {
                     <p>Não tem uma conta ? <a href="/register">Crie aqui</a></p>
                 </form>
             </div>
-            <img />
+            <img src="login-image.png"/>
         </div>
     )
 }

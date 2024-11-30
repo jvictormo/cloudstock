@@ -9,6 +9,9 @@ import { CreateProductController } from "./controllers/Product/CreateProductCont
 import { UpdateProductController } from "./controllers/Product/UpdateProductController";
 import { CreateBulkProductsController } from "./controllers/Product/CreateBulkProductsController";
 import { GetProductWithStockController } from "./controllers/Product/GetProductWithStockController";
+import { GetProductStockController } from "./controllers/ProductStock/GetProductStockController";
+import { UpdateProductStockController } from "./controllers/Product/UpdateProductStockController";
+import { GetProductStockControllerPie } from "./controllers/ProductStock/GetProductStockControllerPie";
 
 export async function routes(fastify: FastifyInstance, options: FastifyPluginOptions) {
     fastify.get("/user/:sequenceIdUser", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -35,10 +38,21 @@ export async function routes(fastify: FastifyInstance, options: FastifyPluginOpt
     fastify.post("/product/bulk", async (request: FastifyRequest, reply: FastifyReply) => {
         return CreateBulkProductsController(request, reply)
     })
+    fastify.put("/product/stock/:sequenceIdProduct", async (request: FastifyRequest, reply: FastifyReply) => {
+        return UpdateProductStockController(request, reply)
+    })
     fastify.put("/product/update/:sequenceIdProduct", async (request: FastifyRequest, reply: FastifyReply) => {
         return UpdateProductController(request, reply)
     })
     fastify.delete("/product/delete/:sequenceIdProduct", async (request: FastifyRequest, reply: FastifyReply) => {
         return DeleteProductController(request, reply)
+    })
+
+
+    fastify.get("/product-stock/get/:sequenceIdUser", async (request: FastifyRequest, reply: FastifyReply) => {
+        return GetProductStockController(request, reply)
+    })
+    fastify.get("/product-stock/pie/get/:sequenceIdUser", async (request: FastifyRequest, reply: FastifyReply) => {
+        return GetProductStockControllerPie(request, reply)
     })
 }

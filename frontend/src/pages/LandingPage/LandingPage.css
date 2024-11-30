@@ -11,7 +11,12 @@
 
 .landingpage-containers {
   display: flex;
+  align-items: center;
   gap: 2vw;
+}
+
+.landingpage-containers img {
+  height: 7vh;
 }
 
 .landingpage-containers>h3 {

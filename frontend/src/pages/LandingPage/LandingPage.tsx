@@ -73,7 +73,7 @@ function LandingPage() {
     <>
       <header className='landingpage-header'>
         <div className='landingpage-containers'>
-          <img />
+          <img src="CloudStockLogo.png"/>
           <h3>CloudStock</h3>
         </div>
         <div className='landingpage-containers'>
